@@ -10,7 +10,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^1.19.1",
     "stylelint": "^10.1.0",
     "stylelint-config-htmlacademy": "^0.1.4"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
   }
 }
