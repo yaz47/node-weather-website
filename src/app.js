@@ -17,7 +17,7 @@ app.set('view engine', 'hbs');
 app.set('views', viewsPath);
 hbs.registerPartials(partialsPath);
 
-//Setup static directory to serve files from
+//Setup static directory to serve
 app.use(express.static(publicDirectoryPath));
 
 app.get('', (req, res) => {
@@ -46,6 +46,22 @@ app.get('/weather', (req, res) => {
   res.send({
     location: 'New York',
     temperature: 28
+  });
+});
+
+app.get('/help/*', (req, res) => {
+  res.render('404', {
+    title: '404',
+    errorMessage: 'Help article not found',
+    name: 'Andrew Mead'
+  });
+});
+
+app.get('*', (req, res) => {
+  res.render('404', {
+    title: '404',
+    errorMessage: 'Page not found',
+    name: 'Andrew Mead'
   });
 });
 
