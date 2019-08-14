@@ -1,9 +1,8 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
-
-console.log( __dirname );
-console.log( path.join(__dirname, '../public') );
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
 
 const app = express();
 
@@ -49,10 +48,22 @@ app.get('/weather', (req, res) => {
     });
   }
 
-  res.send({
-    forecast: 'It is snowing',
-    location: 'Philadelphia',
-    address: req.query.address
+  geocode(req.query.address, (error, data) => {
+    if (error) {
+      return res.send({ error });
+    }
+
+    forecast(data, (error, forecastData) => {
+      if (error) {
+        return res.send({ error });
+      }
+
+      res.send({
+        forecast: forecastData,
+        location: data.location,
+        address: req.query.address
+      });
+    });
   });
 });
 
@@ -63,7 +74,7 @@ app.get('/products', (req, res) => {
     });
   }
 
-  console.log( req.query );
+  console.log(req.query);
   res.send({
     products: []
   });
@@ -87,5 +98,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log( 'Server is up on port 3000' );
+  console.log('Server is up on port 3000');
 });
